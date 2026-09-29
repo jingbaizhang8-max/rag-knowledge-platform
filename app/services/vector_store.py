@@ -88,7 +88,8 @@ def search_chunks(
 
 
 
-
+def close_vector_store():
+    qdrant_client.close()
 
 
 
