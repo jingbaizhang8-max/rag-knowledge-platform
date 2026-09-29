@@ -2,8 +2,7 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from pathlib import Path
 from uuid import uuid4
-from app.services.document_parser import parse_document
-from app.services.chunker import chunk_pages
+from app.services.ingestion_service import ingest_document
 
 router = APIRouter()
 UPLOAD_DIR = Path("data/uploads")
@@ -32,10 +31,8 @@ async def upload_document(
     with open(file_path, "wb") as saved_file:
         saved_file.write(content)
 
-    pages = parse_document(file_path)
-
-    chunks = chunk_pages(
-        pages=pages,
+    ingestion_result = ingest_document(
+        file_path = file_path,
         document_id=document_id,
         source=original_filename
     )
@@ -45,7 +42,8 @@ async def upload_document(
         "filename": original_filename,
         "content_type": file.content_type,
         "size": len(content),
-        "page_count": len(pages),
-        "chunk_count": len(chunks),
-        "status": "processed"
+        "page_count": ingestion_result["page_count"],
+        "chunk_count": ingestion_result["chunk_count"],
+        "stored_count": ingestion_result["stored_count"],
+        "status": "indexed"
     }
