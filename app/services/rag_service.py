@@ -6,12 +6,14 @@ RETRIEVAL_THRESHOLD = 0.5
 
 def ask_question(
         query: str,
-        limit: int = 3
+        limit: int = 3,
+        document_id: str | None = None
 ) ->dict:
 
     retrieved_chunks=retrieve_chunks(
         query=query,
-        limit=limit
+        limit=limit,
+        document_id=document_id
     )
 
     relevant_chunks = []

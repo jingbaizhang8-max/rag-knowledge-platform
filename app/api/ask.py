@@ -9,7 +9,8 @@ router = APIRouter()
 def ask(request: AskRequest):
     result = ask_question(
         query=request.query,
-        limit=request.limit
+        limit=request.limit,
+        document_id=request.document_id
     )
 
     return {

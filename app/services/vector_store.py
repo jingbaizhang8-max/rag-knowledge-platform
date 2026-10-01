@@ -58,14 +58,30 @@ def store_chunks(
 
 def search_chunks(
     query_vector: list[float],
-    limit: int = 3
+    limit: int = 3,
+    document_id: str | None = None
 ) -> list[dict]:
 
     ensure_collection()
 
+    query_filter = None
+
+    if document_id is not None:
+        query_filter = models.Filter(
+            must = [
+                models.FieldCondition(
+                    key="document_id",
+                    match=models.MatchValue(
+                        value=document_id
+                    )
+                )
+            ]
+        )
+
     results = qdrant_client.query_points(
         collection_name=COLLECTION_NAME,
         query=query_vector,
+        query_filter=query_filter,
         limit=limit,
         with_payload=True
     ).points
