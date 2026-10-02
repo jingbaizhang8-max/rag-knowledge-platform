@@ -107,6 +107,37 @@ def search_chunks(
 def close_vector_store():
     qdrant_client.close()
 
+def get_all_chunks() -> list[dict]:
+    chunks=[]
+    offset=None
+
+    while True:
+        records, next_offset = qdrant_client.scroll(
+            collection_name=COLLECTION_NAME,
+            limit=100,
+            offset=offset,
+            with_payload=True,
+            with_vectors=False
+        )
+
+        for record in records:
+            chunks.append(
+                {
+                    "document_id": record.payload["document_id"],
+                    "chunk_index": record.payload["chunk_index"],
+                    "source": record.payload["source"],
+                    "page": record.payload["page"],
+                    "text": record.payload["text"]
+                }
+            )
+
+        if next_offset is None:
+            break
+
+        offset = next_offset
+
+    return chunks
+
 
 
 
