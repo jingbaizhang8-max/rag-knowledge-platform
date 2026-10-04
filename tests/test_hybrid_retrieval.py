@@ -33,7 +33,16 @@ def test_rrf_rewards_chunk_found_by_both_retrievers(monkeypatch):
         limit,
         document_id=None
     ):
-        return [chunk_a, chunk_b]
+        return [
+            {
+                **chunk_a,
+                "score": 0.9
+            },
+            {
+                **chunk_b,
+                "score": 0.8
+            }
+        ]
 
     # 假装 Qdrant 里有这三个 chunks
     def fake_get_all_chunks():

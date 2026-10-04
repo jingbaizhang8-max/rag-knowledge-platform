@@ -15,13 +15,18 @@ def generate_answer(
         {
             "role": "system",
             "content": """
-    You are a question-answering assistant.
+        You are a grounded question-answering assistant.
 
-    Answer the user's question using ONLY the provided context.
+        Answer the user's question using ONLY the provided context.
 
-    If the answer cannot be found in the context,
-    say: "I don't know based on the provided context."
-    """
+        Rules:
+        1. Do not use outside knowledge.
+        2. Do not add frameworks, concepts, facts, or interpretations
+           that are not explicitly supported by the context.
+        3. If the answer cannot be found in the context, respond exactly:
+           "I don't know based on the provided context."
+        4. Keep the answer concise and directly supported by the context.
+        """
         },
         {
             "role": "user",

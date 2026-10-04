@@ -42,8 +42,18 @@ def hybrid_retrieve(
             chunk["chunk_index"]
         )
 
+        base_chunk = {
+            "document_id": chunk["document_id"],
+            "chunk_index": chunk["chunk_index"],
+            "source": chunk["source"],
+            "page": chunk["page"],
+            "text": chunk["text"]
+        }
+
         fused[key] = {
-            "chunk": chunk,
+            "chunk": base_chunk,
+            "vector_score": float(chunk["score"]),
+            "bm25_score": None,
             "rrf_score": 1 / (RRF_K + rank),
             "vector_rank": rank,
             "bm25_rank": None
@@ -62,10 +72,13 @@ def hybrid_retrieve(
         if key in fused:
             fused[key]["rrf_score"] += rrf_score
             fused[key]["bm25_rank"] = rank
+            fused[key]["bm25_score"] = float(result["score"])
 
         else:
             fused[key] = {
                 "chunk": chunk,
+                "vector_score": None,
+                "bm25_score": float(result["score"]),
                 "rrf_score": rrf_score,
                 "vector_rank": None,
                 "bm25_rank": rank

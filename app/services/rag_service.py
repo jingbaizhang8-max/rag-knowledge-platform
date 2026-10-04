@@ -1,40 +1,50 @@
 from app.services.generation_service import generate_answer
-from app.services.retrieval_service import retrieve_chunks
-
+from app.services.hybrid_retrieval import hybrid_retrieve
+from app.services.reranker_service import rerank_chunks
 
 RETRIEVAL_THRESHOLD = 0.5
+
+HYBRID_CANDIDATE_LIMIT = 10
+
+RERANK_THRESHOLD = 0.0
 
 def ask_question(
         query: str,
         limit: int = 3,
         document_id: str | None = None
-) ->dict:
+):
 
-    retrieved_chunks=retrieve_chunks(
+    candidates = hybrid_retrieve(
         query=query,
-        limit=limit,
+        limit=HYBRID_CANDIDATE_LIMIT,
+        candidate_limit=HYBRID_CANDIDATE_LIMIT,
         document_id=document_id
     )
 
-    relevant_chunks = []
+    reranked_results = rerank_chunks(
+        query=query,
+        candidates=candidates,
+        limit=HYBRID_CANDIDATE_LIMIT
+    )
 
-    for chunk in retrieved_chunks:
-        if chunk["score"] >= RETRIEVAL_THRESHOLD:
-            relevant_chunks.append(chunk)
+    relevant_results = [
+        result for result in reranked_results
+        if result["rerank_score"] >= RERANK_THRESHOLD
+    ][:limit]
 
-    if not relevant_chunks:
+
+    if not relevant_results:
         return {
             "answer": "I don't know based on the provided context.",
             "sources": [],
             "retrieved_chunks": []
         }
 
-    context_parts = []
 
-    for chunk in relevant_chunks:
-        context_parts.append(chunk["text"])
-
-    context = "\n\n".join(context_parts)
+    context = "\n\n".join(
+        result["chunk"]["text"]
+        for result in relevant_results
+    )
 
     answer = generate_answer(
         query=query,
@@ -42,7 +52,9 @@ def ask_question(
     )
 
     sources = []
-    for chunk in relevant_chunks:
+    for result in relevant_results:
+         chunk = result["chunk"]
+
          source_info = {
              "source": chunk["source"],
              "page": chunk["page"]
@@ -54,5 +66,5 @@ def ask_question(
     return {
         "answer": answer,
         "sources": sources,
-        "retrieved_chunks": relevant_chunks
+        "retrieved_chunks": relevant_results
     }
