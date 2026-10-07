@@ -5,6 +5,12 @@ class Settings(BaseSettings):
     deepseek_base_url: str = "https://api.deepseek.com"
     deepseek_model: str = "deepseek-flash"
 
+    postgres_user: str
+    postgres_password: str
+    postgres_host: str = "localhost"
+    postgres_port: int = 5433
+    postgres_db: str
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8"

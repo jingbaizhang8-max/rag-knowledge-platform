@@ -1,12 +1,13 @@
 from app.services.generation_service import generate_answer
 from app.services.hybrid_retrieval import hybrid_retrieve
 from app.services.reranker_service import rerank_chunks
+from app.services.evidence_verifier import has_sufficient_evidence
 
 RETRIEVAL_THRESHOLD = 0.5
 
 HYBRID_CANDIDATE_LIMIT = 10
 
-RERANK_THRESHOLD = 0.0
+RERANK_THRESHOLD = -2.0
 
 def ask_question(
         query: str,
@@ -45,6 +46,18 @@ def ask_question(
         result["chunk"]["text"]
         for result in relevant_results
     )
+
+    has_evidence = has_sufficient_evidence(
+        query=query,
+        context=context
+    )
+
+    if not has_evidence:
+        return {
+            "answer": "I don't know based on the provided context.",
+            "sources": [],
+            "retrieved_chunks": []
+        }
 
     answer = generate_answer(
         query=query,

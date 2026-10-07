@@ -1,0 +1,90 @@
+[
+  {
+    "id": "q1",
+    "question": "What is missing from the message 'The login work is taking longer than expected; I will finish soon'?",
+    "expected_pages": [9],
+    "answerable": true
+  },
+  {
+    "id": "q2",
+    "question": "How do Kotter, ADKAR and 7S answer different change-management questions?",
+    "expected_pages": [16],
+    "answerable": true
+  },
+  {
+    "id": "q3",
+    "question": "Give an IT example that distinguishes data, information, knowledge and wisdom.",
+    "expected_pages": [11],
+    "answerable": true
+  },
+  {
+    "id": "q4",
+    "question": "Why is enterprise architecture useful when teams deliver small changes continuously?",
+    "expected_pages": [8],
+    "answerable": true
+  },
+  {
+    "id": "q5",
+    "question": "What is the capital of France?",
+    "expected_pages": [],
+    "answerable": false
+  },
+  {
+    "id": "q6",
+    "question": "Who won the 2026 FIFA World Cup?",
+    "expected_pages": [],
+    "answerable": false
+  },
+
+
+
+  {
+    "id": "q7",
+    "question": "Which important details are absent from the vague status update about the delayed login work?",
+    "expected_pages": [9],
+    "answerable": true
+  },
+  {
+    "id": "q8",
+    "question": "How do the three change approaches differ between large-scale mobilisation, individual adoption, and organisational alignment?",
+    "expected_pages": [16],
+    "answerable": true
+  },
+  {
+    "id": "q9",
+    "question": "Using an IT scenario, explain the progression from raw data to information, knowledge and wisdom.",
+    "expected_pages": [11],
+    "answerable": true
+  },
+  {
+    "id": "q10",
+    "question": "Why does enterprise architecture still matter when development teams release frequent small changes?",
+    "expected_pages": [8],
+    "answerable": true
+  },
+  {
+    "id": "q11",
+    "question": "Which of Kotter, ADKAR and 7S has the highest proven success rate for IT change projects?",
+    "expected_pages": [],
+    "answerable": false
+  },
+  {
+    "id": "q12",
+    "question": "What percentage of IT incidents are caused by failed change management?",
+    "expected_pages": [],
+    "answerable": false
+  },
+  {
+    "id": "q13",
+    "question": "Which enterprise architecture framework is mandatory for all Australian IT organisations?",
+    "expected_pages": [],
+    "answerable": false
+  },
+  {
+    "id": "q14",
+    "question": "What is the legally required escalation time for every major IT incident in Australia?",
+    "expected_pages": [],
+    "answerable": false
+  }
+
+]
