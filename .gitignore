@@ -5,3 +5,4 @@ __pycache__/
 .idea/
 data/uploads/
 data/qdrant/
+**/data/qdrant/
