@@ -11,7 +11,13 @@ from app.services.document_repository import create_document_record
 from app.core.logger import logger
 
 router = APIRouter()
-UPLOAD_DIR = Path("data/uploads")
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+UPLOAD_DIR = PROJECT_ROOT / "data" / "uploads"
+
+UPLOAD_DIR.mkdir(
+    parents=True,
+    exist_ok=True
+)
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 ALLOWED_EXTENSIONS = {".pdf", ".txt", ".md"}

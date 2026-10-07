@@ -1,11 +1,18 @@
 from uuid import uuid4
-
+from pathlib import Path
 from qdrant_client import QdrantClient, models
 
 COLLECTION_NAME = "knowledge_chunks"
 VECTOR_SIZE = 384
 
-qdrant_client = QdrantClient(path="data/qdrant")
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+QDRANT_PATH = PROJECT_ROOT / "data" / "qdrant"
+
+
+qdrant_client = QdrantClient(
+    path=str(QDRANT_PATH)
+)
 
 def ensure_collection():
     collections = qdrant_client.get_collections().collections
