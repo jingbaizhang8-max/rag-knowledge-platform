@@ -7,7 +7,7 @@ from app.services.ingestion_service import ingest_document
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.services.document_repository import create_document_record
+from app.services.document_repository import create_document_record, list_document_records
 from app.core.logger import logger
 
 router = APIRouter()
@@ -88,4 +88,34 @@ async def upload_document(
         raise HTTPException(
             status_code=500,
             detail="Failed to upload and index document."
+        )
+
+
+
+@router.get("")
+def list_documents(
+    db: Session = Depends(get_db),
+):
+    try:
+        documents = list_document_records(db)
+
+        return [
+            {
+                "document_id": document.document_id,
+                "filename": document.filename,
+                "page_count": document.page_count,
+                "chunk_count": document.chunk_count,
+                "status": document.status,
+            }
+            for document in documents
+        ]
+
+    except Exception:
+        logger.exception(
+            "Failed to list documents"
+        )
+
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to list documents.",
         )

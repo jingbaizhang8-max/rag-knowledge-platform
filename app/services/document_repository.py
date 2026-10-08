@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from app.models.document import Document
-
+from sqlalchemy import select
 def create_document_record(
         db: Session,
         document_id: str,
@@ -28,3 +28,11 @@ def create_document_record(
     except Exception:
         db.rollback()
         raise
+
+
+def list_document_records(db):
+    statement = (
+        select(Document).order_by(Document.created_at.desc())
+    )
+
+    return  db.scalars(statement).all()
