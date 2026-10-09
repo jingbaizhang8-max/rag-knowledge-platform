@@ -1,0 +1,29 @@
+
+# Secrets
+.env
+
+# Python virtual environments
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Git and IDE
+.git/
+.idea/
+.vscode/
+
+# Local data
+data/
+**/data/qdrant/
+**/data/uploads/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db

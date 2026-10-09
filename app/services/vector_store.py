@@ -1,7 +1,7 @@
 from uuid import uuid4
 from pathlib import Path
 from qdrant_client import QdrantClient, models
-
+import os
 COLLECTION_NAME = "knowledge_chunks"
 VECTOR_SIZE = 384
 
@@ -9,10 +9,16 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 QDRANT_PATH = PROJECT_ROOT / "data" / "qdrant"
 
+QDRANT_URL = os.getenv("QDRANT_URL")
 
-qdrant_client = QdrantClient(
-    path=str(QDRANT_PATH)
-)
+if QDRANT_URL:
+    #Docker
+    qdrant_client = QdrantClient(url=QDRANT_URL)
+
+else:
+    #Local
+    QDRANT_PATH.mkdir(parents=True, exist_ok=True)
+    qdrant_client = QdrantClient(path=str(QDRANT_PATH))
 
 def ensure_collection():
     collections = qdrant_client.get_collections().collections
