@@ -9,7 +9,8 @@ router = APIRouter()
 def search(request: SearchRequest):
     results= retrieve_chunks(
         query=request.query,
-        limit=request.limit
+        limit=request.limit,
+        document_id=request.document_id,
     )
 
     return {
